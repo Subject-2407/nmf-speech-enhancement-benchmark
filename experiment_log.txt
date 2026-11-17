@@ -34,8 +34,8 @@ Baseline & Default Audited Configuration:
   Reconstruction:
     Wiener magnitude mask / MMSE posterior-weighted spectral gain + mixed STFT phase + iSTFT
 
-Parameter-Tuned Track (Optimized for Real-World Air Noise & Cross-Checked on White Noise):
-  STFT High-Resolution Grid: nperseg = 4096, noverlap = 2048
-  Baseline Control (4096): K = [50, 10], alpha = 100, nperseg = 4096
-  Comparator 1 ONMF-KL (Tuned): K = [80, 20], alpha_s = 0.10, wiener_q = 1.0, nperseg = 4096
-  Comparator 2 NMF-HMM-KL (Tuned): arch = (J_s=8, K_s=25, J_n=4, K_n=20), alpha_s = 0.05, nperseg = 4096
+Parameter-Tuned Track (Joint Cross-Noise Tuned — Stationary White Noise & Non-Stationary Air Noise):
+  STFT High-Resolution Grid: nperseg = 4096, noverlap = 3072 (75% overlap, 21.3 ms hop)
+  Baseline Control (4096/3072): K = [50, 10], alpha = 100, nperseg = 4096, noverlap = 3072
+  Comparator 1 ONMF-KL (Tuned): K = [100, 15], alpha_s = 0.08, wiener_q = 1.3, nperseg = 4096, noverlap = 3072
+  Comparator 2 NMF-HMM-KL (Tuned): arch = (J_s=8, K_s=25, J_n=4, K_n=20), alpha_s = 0.05, gain_pow = 1.0, nperseg = 4096, noverlap = 3072

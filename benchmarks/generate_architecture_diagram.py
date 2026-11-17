@@ -72,16 +72,16 @@ def create_architecture_diagram(output_path=None):
     draw_arrow(8.0, 9.04, 8.0, 8.54, color=c_gray_border)
 
     # 3. Learned Dictionaries
-    draw_box(3.0, 7.12, 4.2, 0.62, "Speech Basis W_s / HMM (W_j, A_s)", "Default: K_s=50 or (4x20) | Tuned: K_s=80 or (8x25)",
+    draw_box(3.0, 7.12, 4.2, 0.62, "Speech Basis W_s / HMM (W_j, A_s)", "Default: K_s=50 or (4x20) | Tuned: K_s=100 or (8x25)",
              fill_color=c_blue_fill, edge_color=c_blue_border, title_color="#1E40AF")
-    draw_box(8.0, 7.12, 4.2, 0.62, "Noise Basis W_n / HMM (W_k, A_n)", "Default: K_n=10 or (2x10) | Tuned: K_n=20 or (4x20)",
+    draw_box(8.0, 7.12, 4.2, 0.62, "Noise Basis W_n / HMM (W_k, A_n)", "Default: K_n=10 or (2x10) | Tuned: K_n=15 or (4x20)",
              fill_color=c_gray_fill, edge_color=c_gray_border, title_color="#334155")
     draw_arrow(3.0, 7.86, 3.0, 7.43, color=c_blue_border)
     draw_arrow(8.0, 7.86, 8.0, 7.43, color=c_gray_border)
 
     # 4. Joint Supervised Basis Dispatcher
     draw_box(5.5, 6.12, 7.6, 0.60, "Joint Supervised Non-Negative Model [ W_speech | W_noise ]",
-             "STFT Grid: Default nperseg=2048 (42.7 ms)  |  Parameter-Tuned nperseg=4096 (85.3 ms) + Apples-to-Apples Control",
+             "STFT Grid: Default (2048, 1024) [50%]  |  Tuned (4096, 3072) [75% Overlap] + Baseline Control",
              fill_color="#FFFFFF", edge_color="#475569", lw=1.6)
     draw_arrow(3.0, 6.81, 4.5, 6.42, color=c_blue_border)
     draw_arrow(8.0, 6.81, 6.5, 6.42, color=c_gray_border)
@@ -114,7 +114,7 @@ def create_architecture_diagram(output_path=None):
                       "- Dictionary: Online patch streaming",
                       "- Inference: Row-wise PGD (alpha = 100)",
                       "- Mask: Linear Wiener magnitude ratio",
-                      "- Dual-track role: Def (2048) & Ctrl (4096)"],
+                      "- Dual-track role: Def (2048) & Ctrl (4096/3072)"],
                      c_blue_fill, c_blue_border)
 
     draw_method_card(xs[1], card_y, card_w, card_h,
@@ -122,7 +122,7 @@ def create_architecture_diagram(output_path=None):
                      ["- Objective: Scale-invariant Gen. KL Div.",
                       "- EM/MM stats: A_t = (1-g)A + g(W*(X/WH)H^T)",
                       "- Inference: 50 Multiplicative Update iters",
-                      "- Tuned: nperseg=4096, K=[80,20], alpha_s=0.10",
+                      "- Tuned: (4096,3072), K=[100,15], as=0.08, q=1.3",
                       "- Fast inference & sparse vocal protection"],
                      c_amber_fill, c_amber_border)
 
@@ -132,7 +132,7 @@ def create_architecture_diagram(output_path=None):
                       "- Kronecker: pi_s (x) pi_n and A_s (x) A_n",
                       "- Scaled float STFT + causal posterior w_n",
                       "- Mask: Expected MMSE spectral gain (Eq. 46)",
-                      "- Tuned: 4096, arch=(8,25,4,20), alpha_s=0.05"],
+                      "- Tuned: (4096,3072), (8,25,4,20), as=0.05"],
                      c_green_fill, c_green_border)
 
     for x_s, col in zip(xs, [c_blue_border, c_amber_border, c_green_border]):
@@ -151,7 +151,7 @@ def create_architecture_diagram(output_path=None):
 
     # 6. Dual-Track Evaluation
     draw_box(8.0, 0.78, 14.4, 0.80,
-             "DUAL-TRACK STATISTICAL EVALUATION: DEFAULT AUDITED (2048) & PARAMETER-TUNED AIR NOISE (4096)",
+             "DUAL-TRACK STATISTICAL EVALUATION: DEFAULT AUDITED (2048/1024) & PARAMETER-TUNED (4096/3072)",
              "BSS Eval (SDR, SIR, SAR [dB])  |  PESQ WB (48kHz -> 16kHz)  |  STOI  |  VAD F1  |  5-Fold Friedman + Holm Paired t-Test + Pearson r",
              fill_color="#FFFFFF", edge_color="#0F172A", title_color="#0F172A", corner=0.03, lw=2.0)
     draw_arrow(8.0, 1.58, 8.0, 1.18, color="#0F172A")
