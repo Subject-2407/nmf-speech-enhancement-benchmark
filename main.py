@@ -89,7 +89,7 @@ if __name__ == '__main__':
     n_components = [50, 10]
 
     # --- 1. White Noise Denoising ---
-    print("=== Eksperimen 1: White Noise ===")
+    print("=== Experiment 1: White Noise ===")
     training_wn = ["Data/audio/whitman.wav", "Data/audio/WhiteNoise.wav"]
     test_wn = "Data/audio/Shakes_WhiteNoise.wav"
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     print("NMF White Noise denoising done!")
 
     # --- 2. Real-World Air Noise Denoising ---
-    print("\n=== Eksperimen 2: Real-World Air Noise ===")
+    print("\n=== Experiment 2: Real-World Air Noise ===")
     training_air = ["Data/audio/whitman.wav", "Data/audio/AirNoise.wav"]
     test_air = "Data/audio/Shakes_Air.wav"
 

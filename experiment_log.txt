@@ -1,0 +1,41 @@
+Hardware & Operating System:
+  OS: Windows 11 (AMD64)
+  Platform: CPU Execution
+  Python Runtime: Python 3.13.0
+
+Core Library Versions:
+  numpy: 2.2.5
+  scipy: 1.15.3
+  scikit-learn: 1.8.0
+  matplotlib: 3.10.3
+  seaborn: 0.13.2
+  pandas: 2.3.x
+  tqdm: 4.67.1
+  soundfile: 0.14.0
+  pesq: wideband (16 kHz resampling via exact 160 / (fs / 100))
+  pystoi: standard 16 kHz
+
+Benchmark Scope (Supervised Non-Negative Matrix Factorization):
+  1. Baseline: ONMF + Frobenius Norm (Sack et al., IEEE CISS 2022)
+  2. Comparator 1: ONMF + Generalized KL Divergence (Online EM/MM Sufficient Statistics)
+  3. Comparator 2: NMF + HMM + KL Divergence (Xiang et al., EURASIP JASMP 2022)
+
+Baseline & Default Audited Configuration:
+  Random Seed: 42 (applied globally to NumPy & NMF)
+  Sampling Rate (fs): 48,000 Hz
+  STFT Parameters:
+    nperseg: 2048
+    noverlap: 1024
+    window: hann
+  Dictionary Components:
+    Baseline ONMF-Frobenius: Ws = 50 atoms, Wn = 10 atoms (alpha = 100 L1 coding)
+    Comparator 1 ONMF-KL: Ws = 50 atoms, Wn = 10 atoms (alpha_s = 0.0, beta = 0.7)
+    Comparator 2 NMF-HMM-KL: J_s = 4 speech states (K_s = 20/state), J_n = 2 noise states (K_n = 10/state), EM iters = 30
+  Reconstruction:
+    Wiener magnitude mask / MMSE posterior-weighted spectral gain + mixed STFT phase + iSTFT
+
+Parameter-Tuned Track (Optimized for Real-World Air Noise & Cross-Checked on White Noise):
+  STFT High-Resolution Grid: nperseg = 4096, noverlap = 2048
+  Baseline Control (4096): K = [50, 10], alpha = 100, nperseg = 4096
+  Comparator 1 ONMF-KL (Tuned): K = [80, 20], alpha_s = 0.10, wiener_q = 1.0, nperseg = 4096
+  Comparator 2 NMF-HMM-KL (Tuned): arch = (J_s=8, K_s=25, J_n=4, K_n=20), alpha_s = 0.05, nperseg = 4096
